@@ -1,0 +1,54 @@
+{
+  "name": "abtasty-mcp-server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for AB Tasty Feature Experimentation & Rollouts platform",
+  "main": "index.js",
+  "type": "module",
+  "files": [
+    "build",
+    "prompts"
+  ],
+  "scripts": {
+    "generate:prompts": "tsx scripts/generate-prompts.ts",
+    "prebuild": "npm run generate:prompts",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=build/index.js --external:@modelcontextprotocol/sdk --external:axios --external:express --external:@flagship.io/js-sdk --packages=external && chmod 755 build/index.js && cp -r assistant-prompts build/",
+    "start": "node ./build/index.js",
+    "dev": "npm run build && npm run start"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "ab-tasty",
+    "flagship",
+    "feature-flags",
+    "experimentation",
+    "rollouts",
+    "feature-management",
+    "typescript",
+    "ai-assistant"
+  ],
+  "author": "AB Tasty",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flagship-io/mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flagship-io/mcp-server/issues"
+  },
+  "homepage": "https://github.com/flagship-io/mcp-server#readme",
+  "dependencies": {
+    "@flagship.io/js-sdk": "^5.1.6",
+    "@modelcontextprotocol/sdk": "^1.20.1",
+    "axios": "^1.12.2",
+    "express": "^5.1.0",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.4",
+    "@types/node": "^24.10.1",
+    "esbuild": "^0.25.11",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
