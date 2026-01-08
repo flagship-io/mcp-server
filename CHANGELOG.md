@@ -12,10 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release of AB Tasty MCP Server
 - Decision API integration with tools:
   - `decision_api_get_campaigns`: Retrieve all campaigns for a visitor
-  - `decision_api_get_flag`: Get specific flag values
-  - `decision_api_send_hit`: Send analytics hits
+  - `decision_api_get_campaign`: Get a specific campaign by ID
+  - `decision_api_get_flags`: Get all feature flags for a visitor
+  - `decision_api_activate_campaign`: Activate a campaign for a visitor
 - Resource Loader API integration:
-  - `resource_loader_extract_campaign`: Extract campaign configurations
+  - `resource_loader_api-load`: Load resource configurations
 - Interactive prompts:
   - Quick Start Guide for Node.js SDK installation
   - Campaign Intaker for guided configuration

@@ -9,11 +9,12 @@ A Model Context Protocol (MCP) server that integrates AB Tasty's Feature Experim
 - **Decision API Integration**: Retrieve campaigns and feature flags for visitors
 
   - `decision_api_get_campaigns`: Get all campaigns for a visitor with context
-  - `decision_api_get_flag`: Get a specific flag value for a visitor
-  - `decision_api_send_hit`: Send analytics hits for visitor actions
+  - `decision_api_get_campaign`: Get a specific campaign by ID for a visitor
+  - `decision_api_get_flags`: Get all feature flags for a visitor
+  - `decision_api_activate_campaign`: Activate a campaign for a visitor
 
 - **Resource Loader API**: Extract and analyze campaign configurations
-  - `resource_loader_extract_campaign`: Extract campaign details and variations
+  - `resource_loader_api-load`: Load campaign details and variations
 
 ### Prompts
 
@@ -122,21 +123,27 @@ decision_api_get_campaigns({
 });
 ```
 
-**Get a specific flag:**
+**Get feature flags:**
 
 ```typescript
-decision_api_get_flag({
+decision_api_get_flags({
   visitor_id: "user123",
-  flag_key: "new_feature_enabled",
-  default_value: false,
+  context: {
+    age: 25,
+    country: "US",
+  },
+  trigger_hit: false,
 });
 ```
 
-**Extract campaign details:**
+**Load campaign details:**
 
 ```typescript
-resource_loader_extract_campaign({
-  campaign_url: "https://app.abtasty.com/...",
+resource_loader_api-load({
+  resourceLoaderContent: {
+    payload: {...}
+  },
+  dryrun: false,
 });
 ```
 
@@ -228,40 +235,53 @@ Retrieves all campaigns for a visitor.
 
 **Returns:** Array of campaigns with variations and modifications
 
-#### `decision_api_get_flag`
+#### `decision_api_get_campaign`
 
-Retrieves a specific flag value for a visitor.
+Retrieves a specific campaign by its ID for a visitor.
 
 **Parameters:**
 
 - `visitor_id` (string): Unique visitor identifier
-- `flag_key` (string): The flag key to retrieve
-- `default_value` (any): Default value if flag not found
+- `campaign_id` (string): Campaign ID to retrieve
+- `context` (object): Key-value pairs for targeting (optional)
 - `trigger_hit` (boolean): Send analytics hit (default: false)
 
-**Returns:** Flag value (string, number, boolean, or object)
+**Returns:** Campaign with variation and modifications
 
-#### `decision_api_send_hit`
+#### `decision_api_get_flags`
 
-Sends an analytics hit for visitor actions.
+Retrieves all feature flags for a visitor.
 
 **Parameters:**
 
 - `visitor_id` (string): Unique visitor identifier
-- `type` (string): Hit type (e.g., "EVENT", "PAGE")
-- `data` (object): Hit data
+- `context` (object): Key-value pairs for targeting (optional)
+- `trigger_hit` (boolean): Send analytics hit (default: false)
 
-**Returns:** Success confirmation
+**Returns:** Object with flag keys and their values
 
-#### `resource_loader_extract_campaign`
+#### `decision_api_activate_campaign`
 
-Extracts campaign configuration from AB Tasty platform.
+Activates a campaign for a visitor.
 
 **Parameters:**
 
-- `campaign_url` (string): URL to the campaign in AB Tasty dashboard
+- `visitor_id` (string): Unique visitor identifier
+- `variation_group_id` (string): Variation group ID to activate
+- `variation_id` (string): Variation ID to activate
 
-**Returns:** Campaign structure with variations, goals, and targeting
+**Returns:** Activation confirmation
+
+#### `resource_loader_api-load`
+
+Loads resources via the Resource Loader API.
+
+**Parameters:**
+
+- `resourceLoaderContent` (object): JSON containing resource loader content
+- `dryrun` (boolean): Whether to simulate the request without sending it
+
+**Returns:** Loaded resources results
 
 ## Troubleshooting
 
