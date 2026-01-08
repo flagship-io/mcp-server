@@ -55,15 +55,14 @@ export class FlagshipClient {
     }
 
     try {
-      const response = await this.client.get(
-        `/${this.config.env_id}/campaigns`,
-        {
-          params: {
-            mode: "normal",
-            exposeAllKeys: true,
-          },
-        }
-      );
+      // Use CDN endpoint to fetch environment configuration
+      const cdnUrl = `https://cdn.flagship.io/${this.config.env_id}/bucketing.json`;
+      const response = await axios.get(cdnUrl, {
+        timeout: this.config.timeout,
+        headers: {
+          "x-api-key": this.config.api_key,
+        },
+      });
 
       this.environmentCache = response.data;
       this.cacheTimestamp = now;

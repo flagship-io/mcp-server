@@ -258,26 +258,37 @@ export async function registerDecisionAPIServer(
     new ResourceTemplate("flagship://environment/info", { list: undefined }),
     {
       title: "Environment Info Resource", // Display name for UI
-      description: "Provides information about the Flagship environment.",
+      description:
+        "Provides information about the Flagship environment configuration.",
     },
-    async (uri, { name }) => {
-      const environment = await flagshipClient.loadEnvironment();
+    async (uri) => {
+      try {
+        const environment = await flagshipClient.loadEnvironment();
 
-      const info = {
-        environment_id: environment?.id,
-        panic_mode: environment?.isPanic,
-        campaigns_count: environment?.campaigns?.length || 0,
-      };
+        const info = {
+          environment_id: config.env_id,
+          panic_mode: environment?.isPanic || false,
+          campaigns_count: environment?.campaigns?.length || 0,
+          campaigns:
+            environment?.campaigns?.map((c: any) => ({
+              id: c.id,
+              name: c.name,
+              type: c.type,
+            })) || [],
+        };
 
-      return {
-        contents: [
-          {
-            uri: uri.href,
-            mimeType: "application/json",
-            text: JSON.stringify(info, null, 2),
-          },
-        ],
-      };
+        return {
+          contents: [
+            {
+              uri: uri.href,
+              mimeType: "application/json",
+              text: JSON.stringify(info, null, 2),
+            },
+          ],
+        };
+      } catch (error: any) {
+        throw new Error(`Failed to load environment info: ${error.message}`);
+      }
     }
   );
 }
