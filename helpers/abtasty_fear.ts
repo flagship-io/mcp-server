@@ -6,7 +6,7 @@ import type {
   Environment,
   CampaignActivation,
   FlagInfo,
-} from "../types/flagship.js";
+} from "../types/abtasty_fear.js";
 
 /**
  * Flagship Decision API Client

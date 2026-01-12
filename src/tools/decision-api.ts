@@ -3,8 +3,8 @@ import {
   ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { FlagshipConfig } from "../../types/flagship.js";
-import { FlagshipClient } from "../../helpers/flagship.js";
+import { FlagshipConfig } from "../../types/abtasty_fear.js";
+import { FlagshipClient } from "../../helpers/abtasty_fear.js";
 
 export async function registerDecisionAPIServer(
   server: McpServer,

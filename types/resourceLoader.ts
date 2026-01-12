@@ -3,7 +3,9 @@
  */
 
 export interface ResourceLoaderConfig {
-  account_id: string;
-  account_environment_id?: string;
-  token?: string;
+  we_account_id?: string;
+  we_token?: string;
+  fear_rca_account_id?: string;
+  fear_rca_account_environment_id?: string;
+  fear_rca_token?: string;
 }

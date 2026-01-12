@@ -2,7 +2,6 @@ import {
   McpServer,
   ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { FlagshipConfig } from "../../types/flagship.js";
 
 interface DocResource {
   uri: string;
@@ -48,10 +47,7 @@ const DOC_URL_MAP: Record<string, string> = {
   "docs://nodejs/github": "https://github.com/flagship-io/flagship-ts-sdk",
 };
 
-export async function registerDocResources(
-  server: McpServer,
-  config: FlagshipConfig
-): Promise<void> {
+export async function registerDocResources(server: McpServer): Promise<void> {
   // Register documentation resources
   for (const doc of NODEJS_DOCS) {
     server.registerResource(
