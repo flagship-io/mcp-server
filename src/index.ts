@@ -40,10 +40,10 @@ app.post("/mcp", async (req, res) => {
         we_account_id:
           (req.headers["x-resource-loader-we-account-id"] as string) || "",
         fear_rca_account_id:
-          (req.headers["x-resource-loader-we-account-id"] as string) || "",
+          (req.headers["x-resource-loader-fear-account-id"] as string) || "",
         fear_rca_account_environment_id:
           (req.headers[
-            "x-resource-loader-fe-account-environment-id"
+            "x-resource-loader-fear-account-environment-id"
           ] as string) || "",
         we_token: (req.headers["x-resource-loader-we-token"] as string) || "",
         fear_rca_token:

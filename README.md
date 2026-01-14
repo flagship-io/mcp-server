@@ -14,7 +14,8 @@ A Model Context Protocol (MCP) server that integrates AB Tasty's Feature Experim
   - `decision_api_activate_campaign`: Activate a campaign for a visitor
 
 - **Resource Loader API**: Extract and analyze campaign configurations
-  - `resource_loader_api-load`: Load campaign details and variations
+  - `resource_loader_api_load_webexp_resources`: Load Web Experimentation & Personalization campaign details and variations
+  - `resource_loader_api_load_featexp_resources`: Load Feature Experimentation & Rollout campaign details and variations
 
 ### Prompts
 
@@ -80,13 +81,21 @@ The server accepts configuration through HTTP headers for each session:
 
 #### Flagship (Feature Experimentation) Headers:
 
-- `x-flagship-env-id`: Your AB Tasty environment ID
-- `x-flagship-api-key`: Your AB Tasty API key
+- `x-fear-env-id`: Your AB Tasty environment ID
+- `x-fear-api-key`: Your AB Tasty API key
 
 #### Resource Loader Headers (optional):
 
-- `x-resource-loader-account-id`: Your AB Tasty account ID
-- `x-resource-loader-token`: Your resource loader authentication token
+**For Web Experimentation & Personalization:**
+
+- `x-resource-loader-we-account-id`: Your AB Tasty Web Experimentation account ID
+- `x-resource-loader-we-token`: Your Web Experimentation resource loader authentication token
+
+**For Feature Experimentation & Rollout:**
+
+- `x-resource-loader-fear-account-id`: Your AB Tasty Feature Experimentation & Rollout account ID
+- `x-resource-loader-fear-account-environment-id`: Your AB Tasty Feature Experimentation & Rollout environment ID
+- `x-resource-loader-fear-rca-token`: Your Feature Experimentation & Rollout (Remote Control API) resource loader authentication token
 
 ### Connecting with MCP Clients
 
@@ -98,8 +107,8 @@ The server uses the Streamable HTTP transport protocol. Configure your MCP clien
     "abtasty": {
       "url": "http://localhost:3000/mcp",
       "headers": {
-        "x-flagship-env-id": "your_env_id",
-        "x-flagship-api-key": "your_api_key"
+        "x-fear-env-id": "your_env_id",
+        "x-fear-api-key": "your_api_key"
       }
     }
   }
@@ -136,10 +145,21 @@ decision_api_get_flags({
 });
 ```
 
-**Load campaign details:**
+**Load Web Experimentation campaign details:**
 
 ```typescript
-resource_loader_api-load({
+resource_loader_api_load_webexp_resources({
+  resourceLoaderContent: {
+    payload: {...}
+  },
+  dryrun: false,
+});
+```
+
+**Load Feature Experimentation campaign details:**
+
+```typescript
+resource_loader_api_load_featexp_resources({
   resourceLoaderContent: {
     payload: {...}
   },
@@ -272,9 +292,20 @@ Activates a campaign for a visitor.
 
 **Returns:** Activation confirmation
 
-#### `resource_loader_api-load`
+#### `resource_loader_api_load_webexp_resources`
 
-Loads resources via the Resource Loader API.
+Loads Web Experimentation & Personalization resources via the Resource Loader API.
+
+**Parameters:**
+
+- `resourceLoaderContent` (object): JSON containing resource loader content
+- `dryrun` (boolean): Whether to simulate the request without sending it
+
+**Returns:** Loaded resources results
+
+#### `resource_loader_api_load_featexp_resources`
+
+Loads Feature Experimentation & Rollout resources via the Resource Loader API.
 
 **Parameters:**
 
