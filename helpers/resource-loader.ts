@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { ResourceLoaderConfig } from "../types/resourceLoader.js";
+import { ResourceLoaderConfig } from "../types/resource-loader.js";
 
 /**
  * Resource Loader API Client

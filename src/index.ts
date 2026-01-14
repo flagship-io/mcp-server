@@ -1,12 +1,12 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { FlagshipConfig } from "../types/abtasty_fear.js";
+import type { FlagshipConfig } from "../types/abtasty-fear.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import express from "express";
 import { randomUUID } from "crypto";
 import { registerDecisionAPIServer } from "./tools/decision-api.js";
 import { registerQuickGuidesPrompts } from "./prompts/quickstart-guide.js";
 import { registerDocResources as registerFlagshipDocResources } from "./resources/documentation.js";
-import { ResourceLoaderConfig } from "../types/resourceLoader.js";
+import { ResourceLoaderConfig } from "../types/resource-loader.js";
 import { registerResourceLoaderAPIServer } from "./tools/resource-loader-api.js";
 import { registerResourceLoaderPrompts } from "./prompts/campaign-intaker.js";
 

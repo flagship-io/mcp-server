@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { GENERATED_PROMPTS } from "../prompts/generated/quickGuides.generated.js";
-import { FlagshipConfig } from "../../types/abtasty_fear.js";
+import { FlagshipConfig } from "../../types/abtasty-fear.js";
 
 /**
  * Registers all generated prompts as MCP prompts

@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { ResourceLoaderClient } from "../../helpers/resourceLoader.js";
-import { ResourceLoaderConfig } from "../../types/resourceLoader.js";
+import { ResourceLoaderClient } from "../../helpers/resource-loader.js";
+import { ResourceLoaderConfig } from "../../types/resource-loader.js";
 
 /**
  * Registers the Resource Loader API tools and resources on the MCP server
