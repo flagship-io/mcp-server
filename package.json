@@ -1,6 +1,6 @@
 {
   "name": "@abtasty/mcp-server",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Model Context Protocol server for AB Tasty Feature Experimentation & Rollouts platform",
   "main": "index.js",
   "type": "module",
