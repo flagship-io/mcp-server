@@ -26,7 +26,6 @@ export class ResourceLoaderClient {
 
   /**
    * Factory method to create an Axios client instance
-   * @private
    */
   private createClient(token?: string): AxiosInstance {
     return axios.create({
@@ -42,7 +41,6 @@ export class ResourceLoaderClient {
 
   /**
    * Get the appropriate client for the API type
-   * @private
    */
   private getClient(apiType: string): AxiosInstance {
     const client = this.clients.get(apiType);
