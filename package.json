@@ -13,7 +13,9 @@
     "prebuild": "npm run generate:prompts",
     "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=build/index.js --external:@modelcontextprotocol/sdk --external:axios --external:express --external:@flagship.io/js-sdk --packages=external && chmod 755 build/index.js && cp -r assistant-prompts build/",
     "start": "node ./build/index.js",
-    "dev": "npm run build && npm run start"
+    "dev": "npm run build && npm run start",
+    "prepublishOnly": "npm run build",
+    "publish:npm": "npm publish --access public"
   },
   "keywords": [
     "mcp",
