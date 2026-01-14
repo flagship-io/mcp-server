@@ -95,7 +95,7 @@ The server uses the Streamable HTTP transport protocol. Configure your MCP clien
 ```json
 {
   "mcpServers": {
-    "abtasty": {
+    "ABTasty": {
       "url": "http://localhost:3000/mcp",
       "headers": {
         "x-flagship-env-id": "your_env_id",

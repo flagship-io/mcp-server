@@ -79,7 +79,7 @@ app.post("/mcp", async (req, res) => {
       });
 
       const server = new McpServer({
-        name: "abtasty-mcp-server",
+        name: "ABTasty",
         version: "0.1.0",
         description: "MCP Server integrating AB Tasty features",
       });
