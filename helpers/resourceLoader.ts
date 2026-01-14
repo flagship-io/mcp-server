@@ -20,8 +20,8 @@ export class ResourceLoaderClient {
       baseURL: "https://resource-loader-api.abtasty.com/v1",
       headers: {
         Authorization: "Bearer " + this.config.token,
-        "x-sdk-client": "flagship-mcp-server",
-        "x-sdk-version": "1.0.0",
+        "x-sdk-client": "abtasty-mcp-server",
+        "x-sdk-version": "0.1.0",
         "Content-Type": "application/json",
       },
     });
