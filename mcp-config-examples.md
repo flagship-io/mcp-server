@@ -13,10 +13,13 @@ Create or update `.vscode/mcp.json` in your workspace:
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
-        "X-Flagship-Env-Id": "your_env_id_here",
-        "X-Flagship-Api-Key": "your_api_key_here",
-        "X-Resource-Loader-Account-Id": "your_account_id_here",
-        "X-Resource-Loader-Token": "your_token_here"
+        "X-Fear-Env-Id": "your_env_id_here",
+        "X-Fear-Api-Key": "your_api_key_here",
+        "X-Resource-Loader-We-Account-Id": "your_we_account_id_here",
+        "X-Resource-Loader-We-Token": "your_we_token_here",
+        "X-Resource-Loader-Fear-Account-Id": "your_fe_account_id_here",
+        "X-Resource-Loader-Fear-Account-Environment-Id": "your_fe_env_id_here",
+        "X-Resource-Loader-Fear-Rca-Token": "your_fe_token_here"
       }
     }
   },
@@ -35,8 +38,8 @@ Add to your Cursor settings (`~/.cursor/mcp_settings.json` or via Settings > MCP
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
-        "X-Flagship-Env-Id": "your_env_id_here",
-        "X-Flagship-Api-Key": "your_api_key_here",
+        "X-Fear-Env-Id": "your_env_id_here",
+        "X-Fear-Api-Key": "your_api_key_here",
         "X-Resource-Loader-Account-Id": "your_account_id_here",
         "X-Resource-Loader-Token": "your_token_here"
       }
@@ -60,10 +63,13 @@ Add to `claude_desktop_config.json`:
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
-        "X-Flagship-Env-Id": "your_env_id_here",
-        "X-Flagship-Api-Key": "your_api_key_here",
-        "X-Resource-Loader-Account-Id": "your_account_id_here",
-        "X-Resource-Loader-Token": "your_token_here"
+        "X-Fear-Env-Id": "your_env_id_here",
+        "X-Fear-Api-Key": "your_api_key_here",
+        "X-Resource-Loader-We-Account-Id": "your_we_account_id_here",
+        "X-Resource-Loader-We-Token": "your_we_token_here",
+        "X-Resource-Loader-Fear-Account-Id": "your_fe_account_id_here",
+        "X-Resource-Loader-Fear-Account-Environment-Id": "your_fe_env_id_here",
+        "X-Resource-Loader-Fear-Rca-Token": "your_fe_token_here"
       }
     }
   }
@@ -82,10 +88,13 @@ Add to `.continue/config.json` in your workspace:
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
-        "X-Flagship-Env-Id": "your_env_id_here",
-        "X-Flagship-Api-Key": "your_api_key_here",
-        "X-Resource-Loader-Account-Id": "your_account_id_here",
-        "X-Resource-Loader-Token": "your_token_here"
+        "X-Fear-Env-Id": "your_env_id_here",
+        "X-Fear-Api-Key": "your_api_key_here",
+        "X-Resource-Loader-We-Account-Id": "your_we_account_id_here",
+        "X-Resource-Loader-We-Token": "your_we_token_here",
+        "X-Resource-Loader-Fear-Account-Id": "your_fe_account_id_here",
+        "X-Resource-Loader-Fear-Account-Environment-Id": "your_fe_env_id_here",
+        "X-Resource-Loader-Fear-Rca-Token": "your_fe_token_here"
       }
     }
   ]
@@ -96,13 +105,21 @@ Add to `.continue/config.json` in your workspace:
 
 ### Required Headers
 
-- `X-Flagship-Env-Id`: Your AB Tasty environment ID (required)
-- `X-Flagship-Api-Key`: Your AB Tasty API key (required)
+- `X-Fear-Env-Id`: Your AB Tasty environment ID (required)
+- `X-Fear-Api-Key`: Your AB Tasty API key (required)
 
 ### Optional Headers (for Resource Loader features)
 
-- `X-Resource-Loader-Account-Id`: Your AB Tasty account ID
-- `X-Resource-Loader-Token`: Your resource loader authentication token
+**For Web Experimentation & Personalization:**
+
+- `X-Resource-Loader-We-Account-Id`: Your AB Tasty Web Experimentation account ID
+- `X-Resource-Loader-We-Token`: Your Web Experimentation resource loader authentication token
+
+**For Feature Experimentation & Rollout:**
+
+- `X-Resource-Loader-Fear-Account-Id`: Your AB Tasty Feature Experimentation account ID
+- `X-Resource-Loader-Fear-Account-Environment-Id`: Your AB Tasty Feature Experimentation environment ID
+- `X-Resource-Loader-Fear-Rca-Token`: Your Feature Experimentation resource loader authentication token
 
 ### Getting Your Credentials
 
@@ -161,8 +178,10 @@ If running the MCP server on a remote host:
       "type": "http",
       "url": "https://your-server.com:3000/mcp",
       "headers": {
-        "X-Flagship-Env-Id": "your_env_id_here",
-        "X-Flagship-Api-Key": "your_api_key_here"
+        "X-Fear-Env-Id": "your_env_id_here",
+        "X-Fear-Api-Key": "your_api_key_here",
+        "X-Resource-Loader-We-Account-Id": "your_we_account_id_here",
+        "X-Resource-Loader-We-Token": "your_we_token_here"
       }
     }
   }
@@ -182,16 +201,21 @@ You can configure multiple server instances for different environments:
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
-        "X-Flagship-Env-Id": "prod_env_id",
-        "X-Flagship-Api-Key": "prod_api_key"
+        "X-Fear-Env-Id": "prod_env_id",
+        "X-Fear-Api-Key": "prod_api_key",
+        "X-Resource-Loader-We-Account-Id": "prod_we_account_id",
+        "X-Resource-Loader-We-Token": "prod_we_token"
       }
     },
     "abtasty-staging": {
       "type": "http",
       "url": "http://localhost:3001/mcp",
       "headers": {
-        "X-Flagship-Env-Id": "staging_env_id",
-        "X-Flagship-Api-Key": "staging_api_key"
+        "X-Fear-Env-Id": "staging_env_id",
+        "X-Fear-Api-Key": "staging_api_key",
+        "X-Resource-Loader-Fear-Account-Id": "staging_fe_account_id",
+        "X-Resource-Loader-Fear-Account-Environment-Id": "staging_fe_env_id",
+        "X-Resource-Loader-Fear-Rca-Token": "staging_fe_token"
       }
     }
   }
