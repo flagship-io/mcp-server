@@ -59,7 +59,73 @@ yarn build
 
 ## Usage
 
-### Running the Server
+### Using with npx (Recommended)
+
+The easiest way to use the MCP server is through npx without any installation:
+
+```json
+{
+  "mcpServers": {
+    "ABTasty": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@abtasty/mcp-server",
+        "--fear-env-id",
+        "YOUR_FEAR_ENV_ID",
+        "--fear-api-key",
+        "YOUR_FEAR_API_KEY",
+        "--resource-loader-fear-account-id",
+        "YOUR_FEAR_ACCOUNT_ID",
+        "--resource-loader-fear-account-environment-id",
+        "YOUR_FEAR_ACCOUNT_ENVIRONMENT_ID",
+        "--resource-loader-fear-rca-token",
+        "YOUR_FEAR_RCA_TOKEN",
+        "--resource-loader-we-account-id",
+        "YOUR_WE_ACCOUNT_ID",
+        "--resource-loader-we-token",
+        "YOUR_WE_TOKEN"
+      ]
+    }
+  }
+}
+```
+
+Replace the placeholder values with your actual credentials:
+
+- `YOUR_FEAR_ENV_ID`: Your AB Tasty Feature Experimentation environment ID
+- `YOUR_FEAR_API_KEY`: Your AB Tasty Feature Experimentation API key
+- `YOUR_FEAR_ACCOUNT_ID`: Your AB Tasty Feature Experimentation Account ID
+- `YOUR_FEAR_ACCOUNT_ENVIRONMENT_ID`: Your AB Tasty Feature Experimentation account Environment ID
+- `YOUR_FEAR_RCA_TOKEN`: Your AB Tasty Feature Experimentation RCA Token
+- `YOUR_WE_ACCOUNT_ID`: Your AB Tasty Web Experimentation Account ID
+- `YOUR_WE_TOKEN`: Your AB Tasty Web Experimentation token
+
+**Alternative: Environment Variables**
+
+You can also set credentials via environment variables instead of command-line arguments:
+
+```bash
+export FLAGSHIP_ENV_ID="your_env_id"
+export FLAGSHIP_API_KEY="your_api_key"
+export RESOURCE_LOADER_ACCOUNT_ID="your_account_id"
+export RESOURCE_LOADER_TOKEN="your_token"
+```
+
+Then use a simpler npx command:
+
+```json
+{
+  "mcpServers": {
+    "ABTasty": {
+      "command": "npx",
+      "args": ["-y", "@abtasty/mcp-server"]
+    }
+  }
+}
+```
+
+### Running the HTTP Server
 
 Start the server on the default port (3000):
 
@@ -99,12 +165,20 @@ The server accepts configuration through HTTP headers for each session:
 
 ### Connecting with MCP Clients
 
-The server uses the Streamable HTTP transport protocol. Configure your MCP client to connect to the server endpoint:
+The server supports two modes of operation:
+
+#### 1. Stdio Mode (for Claude Desktop and similar clients)
+
+Use the npx command shown above for stdio-based MCP clients like Claude Desktop.
+
+#### 2. HTTP Mode (Streamable HTTP transport)
+
+For HTTP-based clients, the server uses the Streamable HTTP transport protocol. Configure your MCP client to connect to the server endpoint:
 
 ```json
 {
   "mcpServers": {
-    "abtasty": {
+    "ABTasty": {
       "url": "http://localhost:3000/mcp",
       "headers": {
         "x-fear-env-id": "your_env_id",
@@ -173,7 +247,8 @@ resource_loader_api_load_featexp_resources({
 
 ```
 ├── src/
-│   ├── index.ts              # Main server entry point
+│   ├── index.ts              # Main HTTP server entry point
+│   ├── cli.ts                # CLI entry point for stdio mode
 │   ├── tools/                # MCP tool implementations
 │   │   ├── decision-api.ts   # Feature flag tools
 │   │   └── resource-loader-api.ts

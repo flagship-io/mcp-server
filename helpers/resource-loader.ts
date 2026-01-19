@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { ResourceLoaderConfig } from "../types/resource-loader.js";
+import { VERSION } from "../version.js";
 
 /**
  * Resource Loader API Client
@@ -32,8 +33,8 @@ export class ResourceLoaderClient {
       baseURL: "https://resource-loader-api.abtasty.com/v1",
       headers: {
         Authorization: "Bearer " + token,
-        "x-sdk-client": "abtasty-mcp-server",
-        "x-sdk-version": "1.0.0",
+        "x-sdk-client": "mcp-server",
+        "x-sdk-version": VERSION,
         "Content-Type": "application/json",
       },
     });

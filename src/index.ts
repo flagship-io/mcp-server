@@ -9,6 +9,7 @@ import { registerDocResources as registerFlagshipDocResources } from "./resource
 import { ResourceLoaderConfig } from "../types/resource-loader.js";
 import { registerResourceLoaderAPIServer } from "./tools/resource-loader-api.js";
 import { registerResourceLoaderPrompts } from "./prompts/campaign-intaker.js";
+import { VERSION } from "../version.js";
 
 // Set up Express and HTTP transport
 const app = express();
@@ -84,8 +85,8 @@ app.post("/mcp", async (req, res) => {
       });
 
       const server = new McpServer({
-        name: "abtasty-mcp-server",
-        version: "1.0.0",
+        name: "ABTasty",
+        version: VERSION,
         description: "MCP Server integrating AB Tasty features",
       });
 

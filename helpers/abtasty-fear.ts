@@ -7,6 +7,7 @@ import type {
   CampaignActivation,
   FlagInfo,
 } from "../types/abtasty-fear.js";
+import { VERSION } from "../version.js";
 
 /**
  * Flagship Decision API Client
@@ -34,8 +35,8 @@ export class FlagshipClient {
       timeout: this.config.timeout,
       headers: {
         "x-api-key": this.config.api_key,
-        "x-sdk-client": "flagship-mcp-server",
-        "x-sdk-version": "1.0.0",
+        "x-sdk-client": "mcp-server",
+        "x-sdk-version": VERSION,
         "Content-Type": "application/json",
       },
     });

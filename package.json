@@ -1,9 +1,10 @@
 {
-  "name": "abtasty-mcp-server",
-  "version": "1.0.0",
+  "name": "@abtasty/mcp-server",
+  "version": "0.2.0",
   "description": "Model Context Protocol server for AB Tasty Feature Experimentation & Rollouts platform",
   "main": "index.js",
   "type": "module",
+  "bin": "build/cli.js",
   "files": [
     "build",
     "prompts"
@@ -11,9 +12,13 @@
   "scripts": {
     "generate:prompts": "tsx scripts/generate-prompts.ts",
     "prebuild": "npm run generate:prompts",
-    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=build/index.js --external:@modelcontextprotocol/sdk --external:axios --external:express --external:@flagship.io/js-sdk --packages=external && chmod 755 build/index.js && cp -r assistant-prompts build/",
+    "build": "esbuild src/index.ts --bundle --platform=node --format=esm --outfile=build/index.js --external:@modelcontextprotocol/sdk --external:axios --external:express --external:@flagship.io/js-sdk --packages=external && esbuild src/cli.ts --bundle --platform=node --format=esm --outfile=build/cli.js --external:@modelcontextprotocol/sdk --external:axios --external:express --external:@flagship.io/js-sdk --packages=external && chmod 755 build/index.js build/cli.js && cp -r assistant-prompts build/",
     "start": "node ./build/index.js",
-    "dev": "npm run build && npm run start"
+    "start:cli": "node build/cli.js",
+    "dev": "npm run build && npm run start",
+    "dev:cli": "npm run build && node npm run start:cli",
+    "prepublishOnly": "npm run build",
+    "publish:npm": "npm publish --access public"
   },
   "keywords": [
     "mcp",

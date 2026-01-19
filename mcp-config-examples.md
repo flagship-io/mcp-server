@@ -9,7 +9,7 @@ Create or update `.vscode/mcp.json` in your workspace:
 ```json
 {
   "servers": {
-    "abtasty-mcp-server": {
+    "ABTasty": {
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
@@ -34,7 +34,7 @@ Add to your Cursor settings (`~/.cursor/mcp_settings.json` or via Settings > MCP
 ```json
 {
   "mcpServers": {
-    "abtasty": {
+    "ABTasty": {
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
@@ -59,7 +59,7 @@ Add to `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "abtasty": {
+    "ABTasty": {
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
@@ -84,7 +84,7 @@ Add to `.continue/config.json` in your workspace:
 {
   "mcpServers": [
     {
-      "name": "abtasty",
+      "name": "ABTasty",
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
@@ -174,7 +174,7 @@ If running the MCP server on a remote host:
 ```json
 {
   "servers": {
-    "abtasty-mcp-server": {
+    "ABTasty": {
       "type": "http",
       "url": "https://your-server.com:3000/mcp",
       "headers": {
@@ -197,7 +197,7 @@ You can configure multiple server instances for different environments:
 ```json
 {
   "servers": {
-    "abtasty-production": {
+    "ABTasty-production": {
       "type": "http",
       "url": "http://localhost:3000/mcp",
       "headers": {
@@ -207,7 +207,7 @@ You can configure multiple server instances for different environments:
         "X-Resource-Loader-We-Token": "prod_we_token"
       }
     },
-    "abtasty-staging": {
+    "ABTasty-staging": {
       "type": "http",
       "url": "http://localhost:3001/mcp",
       "headers": {
