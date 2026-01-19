@@ -13,9 +13,10 @@ A Model Context Protocol (MCP) server that integrates AB Tasty's Feature Experim
   - `decision_api_get_flags`: Get all feature flags for a visitor
   - `decision_api_activate_campaign`: Activate a campaign for a visitor
 
-- **Resource Loader API**: Extract and analyze campaign configurations
+- **Resource Loader API**: Extract and analyze campaign configurations (v0.2.0+)
   - `resource_loader_api_load_webexp_resources`: Load Web Experimentation & Personalization campaign details and variations
   - `resource_loader_api_load_featexp_resources`: Load Feature Experimentation & Rollout campaign details and variations
+  - _Note: In v0.2.0, the Resource Loader API was split into platform-specific tools for better clarity_
 
 ### Prompts
 
@@ -25,7 +26,7 @@ A Model Context Protocol (MCP) server that integrates AB Tasty's Feature Experim
 
 ### Resources
 
-- **Documentation**: Access to AB Tasty Flagship documentation directly through MCP
+- **Documentation**: Access to AB Tasty Feature Experimentation & Rollout documentation directly through MCP
 
 ## Prerequisites
 
@@ -93,7 +94,7 @@ The easiest way to use the MCP server is through npx without any installation:
 
 Replace the placeholder values with your actual credentials:
 
-- `YOUR_FEAR_ENV_ID`: Your AB Tasty Feature Experimentation environment ID
+- `YOUR_FEAR_ENV_ID`: Your AB Tasty Feature Experimentation account environment ID
 - `YOUR_FEAR_API_KEY`: Your AB Tasty Feature Experimentation API key
 - `YOUR_FEAR_ACCOUNT_ID`: Your AB Tasty Feature Experimentation Account ID
 - `YOUR_FEAR_ACCOUNT_ENVIRONMENT_ID`: Your AB Tasty Feature Experimentation account Environment ID
@@ -106,10 +107,18 @@ Replace the placeholder values with your actual credentials:
 You can also set credentials via environment variables instead of command-line arguments:
 
 ```bash
-export FLAGSHIP_ENV_ID="your_env_id"
-export FLAGSHIP_API_KEY="your_api_key"
-export RESOURCE_LOADER_ACCOUNT_ID="your_account_id"
-export RESOURCE_LOADER_TOKEN="your_token"
+# Feature Experimentation & Rollout
+export FEAR_ENV_ID="your_fear_env_id"
+export FEAR_API_KEY="your_fear_api_key"
+
+# Resource Loader - Feature Experimentation & Rollout
+export RESOURCE_LOADER_FEAR_ACCOUNT_ID="your_fear_account_id"
+export RESOURCE_LOADER_FEAR_ACCOUNT_ENVIRONMENT_ID="your_fear_account_environment_id"
+export RESOURCE_LOADER_FEAR_RCA_TOKEN="your_fear_rca_token"
+
+# Resource Loader - Web Experimentation & Personalization
+export RESOURCE_LOADER_WE_ACCOUNT_ID="your_we_account_id"
+export RESOURCE_LOADER_WE_TOKEN="your_we_token"
 ```
 
 Then use a simpler npx command:
@@ -145,10 +154,10 @@ The server will be available at `http://localhost:3000/mcp` (or your custom port
 
 The server accepts configuration through HTTP headers for each session:
 
-#### Flagship (Feature Experimentation) Headers:
+#### Feature Experimentation & Rollout (FEAR) Headers:
 
-- `x-fear-env-id`: Your AB Tasty environment ID
-- `x-fear-api-key`: Your AB Tasty API key
+- `x-fear-env-id`: Your AB Tasty Feature Experimentation & Rollout environment ID
+- `x-fear-api-key`: Your AB Tasty Feature Experimentation & Rollout API key
 
 #### Resource Loader Headers (optional):
 
@@ -258,8 +267,8 @@ resource_loader_api_load_featexp_resources({
 │   └── resources/            # Resource providers
 │       └── documentation.ts
 ├── helpers/                  # Utility functions
-│   ├── flagship.ts          # AB Tasty SDK wrapper
-│   └── resourceLoader.ts    # Campaign extraction utilities
+│   ├── abtasty-fear.ts      # AB Tasty Feature Experimentation SDK wrapper
+│   └── resource-loader.ts   # Campaign extraction utilities
 ├── types/                   # TypeScript type definitions
 ├── assistant-prompts/       # Markdown prompt templates
 └── build/                   # Compiled output

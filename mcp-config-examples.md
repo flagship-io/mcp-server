@@ -40,8 +40,11 @@ Add to your Cursor settings (`~/.cursor/mcp_settings.json` or via Settings > MCP
       "headers": {
         "X-Fear-Env-Id": "your_env_id_here",
         "X-Fear-Api-Key": "your_api_key_here",
-        "X-Resource-Loader-Account-Id": "your_account_id_here",
-        "X-Resource-Loader-Token": "your_token_here"
+        "X-Resource-Loader-We-Account-Id": "your_we_account_id_here",
+        "X-Resource-Loader-We-Token": "your_we_token_here",
+        "X-Resource-Loader-Fear-Account-Id": "your_fear_account_id_here",
+        "X-Resource-Loader-Fear-Account-Environment-Id": "your_fear_env_id_here",
+        "X-Resource-Loader-Fear-Rca-Token": "your_fear_rca_token_here"
       }
     }
   }
@@ -123,7 +126,7 @@ Add to `.continue/config.json` in your workspace:
 
 ### Getting Your Credentials
 
-1. **Flagship Credentials**:
+1. **Feature Experimentation & Rollout Credentials**:
 
    - Log in to [AB Tasty Platform](https://app2.abtasty.com/settings/feature-experimentation/environment)
    - Go to Settings > Environments
