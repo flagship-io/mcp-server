@@ -34,7 +34,7 @@ app.post("/mcp", async (req, res) => {
       // New session - create server with credentials from headers
       const flagshipConfig: FlagshipConfig = {
         env_id: (req.headers["x-fear-env-id"] as string) || "",
-        api_key: (req.headers["x-fear-api-key"] as string) || "",
+        api_key: (req.headers["x-fear-api-key"] as string) || ""
       };
 
       const resourceLoaderConfig: ResourceLoaderConfig = {
@@ -48,7 +48,7 @@ app.post("/mcp", async (req, res) => {
           ] as string) || "",
         we_token: (req.headers["x-resource-loader-we-token"] as string) || "",
         fear_rca_token:
-          (req.headers["x-resource-loader-fear-rca-token"] as string) || "",
+          (req.headers["x-resource-loader-fear-rca-token"] as string) || ""
       };
 
       // Log configuration (masking API key for security)
@@ -81,13 +81,13 @@ app.post("/mcp", async (req, res) => {
           sessions[newSessionId] = sessionData;
           console.error(`Session initialized: ${newSessionId}`);
         },
-        enableJsonResponse: true,
+        enableJsonResponse: true
       });
 
       const server = new McpServer({
         name: "ABTasty",
         version: VERSION,
-        description: "MCP Server integrating AB Tasty features",
+        description: "MCP Server integrating AB Tasty features"
       });
 
       await registerDecisionAPIServer(server, flagshipConfig);
@@ -115,9 +115,9 @@ app.post("/mcp", async (req, res) => {
         jsonrpc: "2.0",
         error: {
           code: -32000,
-          message: "Invalid session ID",
+          message: "Invalid session ID"
         },
-        id: null,
+        id: null
       });
       return;
     }
@@ -131,9 +131,9 @@ app.post("/mcp", async (req, res) => {
         jsonrpc: "2.0",
         error: {
           code: -32603,
-          message: "Internal server error",
+          message: "Internal server error"
         },
-        id: null,
+        id: null
       });
     }
   }

@@ -16,12 +16,12 @@ export class ResourceLoaderClient {
       we_token: config.we_token,
       fear_rca_account_id: config.fear_rca_account_id,
       fear_rca_account_environment_id: config.fear_rca_account_environment_id,
-      fear_rca_token: config.fear_rca_token,
+      fear_rca_token: config.fear_rca_token
     };
 
     this.clients = new Map([
       ["web-exp", this.createClient(this.config.we_token)],
-      ["feat-exp", this.createClient(this.config.fear_rca_token)],
+      ["feat-exp", this.createClient(this.config.fear_rca_token)]
     ]);
   }
 
@@ -35,8 +35,8 @@ export class ResourceLoaderClient {
         Authorization: "Bearer " + token,
         "x-sdk-client": "mcp-server",
         "x-sdk-version": VERSION,
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     });
   }
 
@@ -56,7 +56,7 @@ export class ResourceLoaderClient {
    */
   async loadWebExpResources(resourceLoaderContent: any): Promise<any> {
     return this.loadResources(resourceLoaderContent, "web-exp", {
-      account_id: this.config.we_account_id!,
+      account_id: this.config.we_account_id!
     });
   }
 
@@ -64,9 +64,9 @@ export class ResourceLoaderClient {
    * Load Feat Exp resources via Resource Loader API
    */
   async loadFeatExpResources(resourceLoaderContent: any): Promise<any> {
-    return this.loadResources(resourceLoaderContent, "feat-exp", {
+    return this.loadResources(resourceLoaderContent, "feature-exp", {
       account_id: this.config.fear_rca_account_id!,
-      account_environment_id: this.config.fear_rca_account_environment_id!,
+      account_environment_id: this.config.fear_rca_account_environment_id!
     });
   }
 
@@ -90,7 +90,7 @@ export class ResourceLoaderClient {
 
       const payload = {
         version: 1,
-        resources: [resources],
+        resources: [resources]
       };
 
       console.error("[ResourceLoader] Sending request to Resource Loader API");

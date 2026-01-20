@@ -25,7 +25,7 @@ function extractMetadata(content: string, filename: string): PromptMetadata {
 
   return {
     name: filename.replace(".md", "").replace(/-/g, "_"),
-    description,
+    description
   };
 }
 
@@ -43,7 +43,7 @@ function generateQuickGuidesPrompts(): string {
 
     return {
       metadata,
-      content,
+      content
     };
   });
 

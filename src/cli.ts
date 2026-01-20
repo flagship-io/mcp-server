@@ -18,34 +18,34 @@ import { VERSION } from "../version.js";
 const { values } = parseArgs({
   options: {
     "fear-env-id": {
-      type: "string",
+      type: "string"
     },
     "fear-api-key": {
-      type: "string",
+      type: "string"
     },
     "resource-loader-we-account-id": {
-      type: "string",
+      type: "string"
     },
     "resource-loader-we-token": {
-      type: "string",
+      type: "string"
     },
     "resource-loader-fear-account-id": {
-      type: "string",
+      type: "string"
     },
     "resource-loader-fear-account-environment-id": {
-      type: "string",
+      type: "string"
     },
     "resource-loader-fear-rca-token": {
-      type: "string",
-    },
+      type: "string"
+    }
   },
-  allowPositionals: true,
+  allowPositionals: true
 });
 
 // Create configurations from CLI args
 const flagshipConfig: FlagshipConfig = {
   env_id: values["fear-env-id"] || process.env.FEAR_ENV_ID || "",
-  api_key: values["fear-api-key"] || process.env.FEAR_API_KEY || "",
+  api_key: values["fear-api-key"] || process.env.FEAR_API_KEY || ""
 };
 
 const resourceLoaderConfig: ResourceLoaderConfig = {
@@ -68,7 +68,7 @@ const resourceLoaderConfig: ResourceLoaderConfig = {
   fear_rca_token:
     values["resource-loader-fear-rca-token"] ||
     process.env.RESOURCE_LOADER_FEAR_RCA_TOKEN ||
-    "",
+    ""
 };
 
 // Log configuration
@@ -122,7 +122,7 @@ if (!flagshipConfig.env_id || !flagshipConfig.api_key) {
 const server = new McpServer({
   name: "ABTasty",
   version: VERSION,
-  description: "MCP Server integrating AB Tasty features",
+  description: "MCP Server integrating AB Tasty features"
 });
 
 // Register all tools, prompts, and resources

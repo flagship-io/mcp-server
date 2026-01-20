@@ -25,7 +25,7 @@ export async function registerQuickGuidesPrompts(
           title: prompt.title,
           description: prompt.description,
           argsSchema:
-            Object.keys(argsSchema).length > 0 ? argsSchema : undefined,
+            Object.keys(argsSchema).length > 0 ? argsSchema : undefined
         },
         async (args: Record<string, string>) => {
           // Replace any argument placeholders in the content
@@ -59,10 +59,10 @@ export async function registerQuickGuidesPrompts(
                 role: "user",
                 content: {
                   type: "text",
-                  text: content,
-                },
-              },
-            ],
+                  text: content
+                }
+              }
+            ]
           };
         }
       );

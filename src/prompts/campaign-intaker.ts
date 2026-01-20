@@ -23,7 +23,7 @@ export async function registerResourceLoaderPrompts(
           title: prompt.title,
           description: prompt.description,
           argsSchema:
-            Object.keys(argsSchema).length > 0 ? argsSchema : undefined,
+            Object.keys(argsSchema).length > 0 ? argsSchema : undefined
         },
         async () => {
           // Replace any argument placeholders in the content
@@ -35,17 +35,17 @@ export async function registerResourceLoaderPrompts(
                 role: "assistant",
                 content: {
                   type: "text",
-                  text: "Call the MCP tool `resource_loader_api.load` to load resources via the Resource Loader API.",
-                },
+                  text: "Call the MCP tool `resource_loader_api.load` to load resources via the Resource Loader API."
+                }
               },
               {
                 role: "user",
                 content: {
                   type: "text",
-                  text: content,
-                },
-              },
-            ],
+                  text: content
+                }
+              }
+            ]
           };
         }
       );

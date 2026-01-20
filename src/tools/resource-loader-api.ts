@@ -28,9 +28,9 @@ async function handleResourceLoading(
       content: [
         {
           type: "text" as const,
-          text: `Dry run mode - resource loader content:\n\n${resourceLoaderContent}`,
-        },
-      ],
+          text: `Dry run mode - resource loader content:\n\n${resourceLoaderContent}`
+        }
+      ]
     };
   }
 
@@ -47,14 +47,15 @@ async function handleResourceLoading(
                 })
                 .join("")}
 
-              `,
-        },
-      ],
+              `
+        }
+      ]
     };
   }
 
   try {
-    const response = await loadFunction(resourceLoaderContent.payload);
+    // Pass the entire resourceLoaderContent object to the loadFunction
+    const response = await loadFunction(resourceLoaderContent);
 
     console.error(
       `[Tool] Successfully loaded resources with ${
@@ -66,9 +67,9 @@ async function handleResourceLoading(
       content: [
         {
           type: "text" as const,
-          text: `Loaded resources:\n\n${JSON.stringify(response, null, 2)}`,
-        },
-      ],
+          text: `Loaded resources:\n\n${JSON.stringify(response, null, 2)}`
+        }
+      ]
     };
   } catch (error) {
     console.error(`[Tool] Error loading resources:`, error);
@@ -85,7 +86,7 @@ const resourceLoaderInputSchema = {
     .describe("JSON containing resource loader content"),
   dryrun: z
     .boolean()
-    .describe("Whether to simulate the request without sending it"),
+    .describe("Whether to simulate the request without sending it")
 };
 
 export async function registerResourceLoaderAPIServer(
@@ -101,7 +102,7 @@ export async function registerResourceLoaderAPIServer(
       title: "Load Web Experimentation & Personalization Resources",
       description:
         "Load Web experimentation resource loader content via the Resource Loader API. Returns the loaded resources results.",
-      inputSchema: resourceLoaderInputSchema,
+      inputSchema: resourceLoaderInputSchema
     },
     async ({ resourceLoaderContent, dryrun }) =>
       handleResourceLoading(resourceLoaderContent, dryrun, (content) =>
@@ -116,7 +117,7 @@ export async function registerResourceLoaderAPIServer(
       title: "Load Feature Experimentation and Rollout Resources",
       description:
         "Load Feature experimentation resource loader content via the Resource Loader API. Returns the loaded resources results.",
-      inputSchema: resourceLoaderInputSchema,
+      inputSchema: resourceLoaderInputSchema
     },
     async ({ resourceLoaderContent, dryrun }) =>
       await handleResourceLoading(resourceLoaderContent, dryrun, (content) =>

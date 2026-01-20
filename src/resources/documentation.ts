@@ -1,6 +1,6 @@
 import {
   McpServer,
-  ResourceTemplate,
+  ResourceTemplate
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 interface DocResource {
@@ -15,26 +15,26 @@ const NODEJS_DOCS: DocResource[] = [
     uri: "docs://nodejs/installation",
     name: "Node.js SDK Installation",
     description: "Installation guide for the Flagship Node.js SDK",
-    mimeType: "text/html",
+    mimeType: "text/html"
   },
   {
     uri: "docs://nodejs/quick-start",
     name: "Node.js SDK Quick Start",
     description: "Quick start guide for the Flagship Node.js SDK",
-    mimeType: "text/html",
+    mimeType: "text/html"
   },
   {
     uri: "docs://nodejs/reference",
     name: "Node.js SDK Reference",
     description: "Complete API reference for the Flagship Node.js SDK",
-    mimeType: "text/html",
+    mimeType: "text/html"
   },
   {
     uri: "docs://nodejs/github",
     name: "Flagship TypeScript SDK Repository",
     description: "Official GitHub repository for the Flagship TypeScript SDK",
-    mimeType: "text/html",
-  },
+    mimeType: "text/html"
+  }
 ];
 
 const DOC_URL_MAP: Record<string, string> = {
@@ -44,7 +44,7 @@ const DOC_URL_MAP: Record<string, string> = {
     "https://docs.abtasty.com/server-side/sdks/js-sdk/javascript-quick-start",
   "docs://nodejs/reference":
     "https://docs.abtasty.com/server-side/sdks/js-sdk/js-reference",
-  "docs://nodejs/github": "https://github.com/flagship-io/flagship-ts-sdk",
+  "docs://nodejs/github": "https://github.com/flagship-io/flagship-ts-sdk"
 };
 
 export async function registerDocResources(server: McpServer): Promise<void> {
@@ -55,7 +55,7 @@ export async function registerDocResources(server: McpServer): Promise<void> {
       new ResourceTemplate(doc.uri, { list: undefined }),
       {
         title: doc.name,
-        description: doc.description,
+        description: doc.description
       },
       async (uri) => {
         const actualUrl = DOC_URL_MAP[uri.href];
@@ -77,9 +77,9 @@ export async function registerDocResources(server: McpServer): Promise<void> {
               {
                 uri: uri.href,
                 mimeType: doc.mimeType,
-                text: content,
-              },
-            ],
+                text: content
+              }
+            ]
           };
         } catch (error) {
           throw new Error(

@@ -5,7 +5,7 @@ import type {
   DecisionResponse,
   Environment,
   CampaignActivation,
-  FlagInfo,
+  FlagInfo
 } from "../types/abtasty-fear.js";
 import { VERSION } from "../version.js";
 
@@ -25,7 +25,7 @@ export class FlagshipClient {
       api_url: "https://decision.flagship.io/v2",
       polling_interval: 60000, // 60 seconds
       timeout: 5000,
-      ...config,
+      ...config
     };
 
     this.pollingInterval = this.config.polling_interval || 60000;
@@ -37,8 +37,8 @@ export class FlagshipClient {
         "x-api-key": this.config.api_key,
         "x-sdk-client": "mcp-server",
         "x-sdk-version": VERSION,
-        "Content-Type": "application/json",
-      },
+        "Content-Type": "application/json"
+      }
     });
   }
 
@@ -61,8 +61,8 @@ export class FlagshipClient {
       const response = await axios.get(cdnUrl, {
         timeout: this.config.timeout,
         headers: {
-          "x-api-key": this.config.api_key,
-        },
+          "x-api-key": this.config.api_key
+        }
       });
 
       this.environmentCache = response.data;
@@ -89,7 +89,7 @@ export class FlagshipClient {
         {
           visitor_id: request.visitor_id,
           context: request.context || {},
-          trigger_hit: request.trigger_hit || false,
+          trigger_hit: request.trigger_hit || false
         }
       );
 
@@ -114,7 +114,7 @@ export class FlagshipClient {
         {
           visitor_id: request.visitor_id,
           context: request.context || {},
-          trigger_hit: request.trigger_hit || false,
+          trigger_hit: request.trigger_hit || false
         }
       );
 
@@ -144,7 +144,7 @@ export class FlagshipClient {
         {
           visitor_id: request.visitor_id,
           context: request.context || {},
-          trigger_hit: false,
+          trigger_hit: false
         }
       );
 
@@ -173,7 +173,7 @@ export class FlagshipClient {
         cid: this.config.env_id,
         caid: variationGroupId,
         vaid: variationId,
-        qt: Date.now(),
+        qt: Date.now()
       };
 
       await this.client.post("/activate", activation);
@@ -214,8 +214,8 @@ export class FlagshipClient {
               variationId: campaign.variation.id,
               variationName: campaign.variation.name,
               reference: campaign.variation.reference,
-              slug: campaign.slug,
-            },
+              slug: campaign.slug
+            }
           };
         }
       }
