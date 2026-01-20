@@ -255,11 +255,11 @@ export async function registerDecisionAPIServer(
   // Add a dynamic environment info resource
   server.registerResource(
     "decision_api_environment_info",
-    new ResourceTemplate("flagship://environment/info", { list: undefined }),
+    new ResourceTemplate("fear://environment/info", { list: undefined }),
     {
       title: "Environment Info Resource", // Display name for UI
       description:
-        "Provides information about the Flagship environment configuration.",
+        "Provides information about the FE&R environment configuration.",
     },
     async (uri) => {
       try {
