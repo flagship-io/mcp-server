@@ -121,7 +121,7 @@ export async function registerResourceLoaderAPIServer(
     },
     async ({ resourceLoaderContent, dryrun }) =>
       await handleResourceLoading(resourceLoaderContent, dryrun, (content) =>
-        resourceLoaderClient.loadFeatExpResources(content)
+        resourceLoaderClient.loadFeatureExpResources(content)
       )
   );
 }

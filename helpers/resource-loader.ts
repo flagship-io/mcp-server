@@ -21,7 +21,7 @@ export class ResourceLoaderClient {
 
     this.clients = new Map([
       ["web-exp", this.createClient(this.config.we_token)],
-      ["feat-exp", this.createClient(this.config.fear_rca_token)]
+      ["feature-exp", this.createClient(this.config.fear_rca_token)]
     ]);
   }
 
@@ -63,7 +63,7 @@ export class ResourceLoaderClient {
   /**
    * Load Feat Exp resources via Resource Loader API
    */
-  async loadFeatExpResources(resourceLoaderContent: any): Promise<any> {
+  async loadFeatureExpResources(resourceLoaderContent: any): Promise<any> {
     return this.loadResources(resourceLoaderContent, "feature-exp", {
       account_id: this.config.fear_rca_account_id!,
       account_environment_id: this.config.fear_rca_account_environment_id!

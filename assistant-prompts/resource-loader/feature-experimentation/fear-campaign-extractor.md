@@ -40,6 +40,7 @@ Never output prose, comments, or markdown. Output only the JSON object required 
   - If a project is mentioned or needs to be created, include a project resource with `"type": "project"`, `$_ref: "p1"`, and `payload.name`
   - Reference the project in campaign as `"project_id": "$p1.id"`
 - **Variation groups (payload.variation_groups[])**
+  - **CRITICAL: Must contain exactly ONE variation group** - the array structure is required by the schema, but there must be exactly 1 element.
   - Each variation group contains:
     - `name` (string): name of the variation group
     - `variations[]`: array of variation objects
@@ -97,10 +98,14 @@ Never output prose, comments, or markdown. Output only the JSON object required 
   - `description` (string, can be empty)
   - `project_id` (string, typically `"$p1.id"` if project resource included)
   - `type` (always "ab" for Feature Experimentation)
-  - `variation_groups[]` (≥1) with each containing:
+  - `variation_groups[]` (must contain exactly 1 variation group) with each containing:
     - `name` (string)
     - `variations[]` (≥1 with at least one `reference: true`)
     - `targeting` (optional)
+- **Single variation group validation:**
+  - The `variation_groups` array MUST contain exactly one (1) element
+  - Never create multiple variation groups, even if the user mentions multiple tests
+  - If the user requests multiple tests, ask for clarification and explain they need separate campaigns
 - **Variation validation:**
   - Each variation must have: `name`, `reference` (boolean), `allocation` (0-100)
   - Allocations within a variation group must sum to exactly 100
