@@ -90,7 +90,7 @@ export class ResourceLoaderClient {
 
       const payload = {
         version: 1,
-        resources: [resources]
+        resources
       };
 
       console.error("[ResourceLoader] Sending request to Resource Loader API");

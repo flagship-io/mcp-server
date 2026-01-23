@@ -7,22 +7,24 @@ A Model Context Protocol (MCP) server that integrates AB Tasty's Feature Experim
 ### Tools
 
 - **Decision API Integration**: Retrieve campaigns and feature flags for visitors
-
   - `decision_api_get_campaigns`: Get all campaigns for a visitor with context
   - `decision_api_get_campaign`: Get a specific campaign by ID for a visitor
   - `decision_api_get_flags`: Get all feature flags for a visitor
   - `decision_api_activate_campaign`: Activate a campaign for a visitor
 
 - **Resource Loader API**: Extract and analyze campaign configurations (v0.2.0+)
-  - `resource_loader_api_load_webexp_resources`: Load Web Experimentation & Personalization campaign details and variations
-  - `resource_loader_api_load_featexp_resources`: Load Feature Experimentation & Rollout campaign details and variations
+  - `resource_loader_api_load_webexp_resources`: Load Web Experimentation & Personalization resources (use with `we_resource_extractor` prompt)
+  - `resource_loader_api_load_featexp_resources`: Load Feature Experimentation & Rollout resources (use with `fear_resource_extractor` prompt)
   - _Note: In v0.2.0, the Resource Loader API was split into platform-specific tools for better clarity_
 
 ### Prompts
 
 - **Quick Start Guides**: Interactive prompts for AB Tasty SDK installation
   - Node.js SDK installation guide
-- **Campaign Intaker**: Guided campaign configuration extraction and analysis
+- **Resource Extractors**: AI-powered resource configuration generators
+  - `we_resource_extractor`: Converts natural language campaign briefs into Web Experimentation resource configurations
+  - `fear_resource_extractor`: Converts natural language campaign briefs into Feature Experimentation resource configurations
+  - These prompts generate the JSON needed for the Resource Loader API tools
 
 ### Resources
 
@@ -209,9 +211,9 @@ decision_api_get_campaigns({
   visitor_id: "user123",
   context: {
     age: 25,
-    country: "US",
+    country: "US"
   },
-  trigger_hit: true,
+  trigger_hit: true
 });
 ```
 
@@ -222,29 +224,86 @@ decision_api_get_flags({
   visitor_id: "user123",
   context: {
     age: 25,
-    country: "US",
+    country: "US"
   },
-  trigger_hit: false,
+  trigger_hit: false
 });
 ```
 
-**Load Web Experimentation campaign details:**
+**Create and load Web Experimentation resources:**
+
+Step 1: Use the `we_resource_extractor` prompt to convert your campaign brief into a resource configuration:
+
+```text
+User: Create an A/B test on https://example.com/pricing.
+Show a red button for 50% of traffic.
+
+Prompt Output:
+{
+  "needs_clarification": false,
+  "questions": [],
+  "resources": [
+    {
+      "type": "campaign",
+      "$_ref": "c1",
+      "action": "create",
+      "payload": {...}
+    }
+  ]
+}
+```
+
+Step 2: Load the resources using the tool:
 
 ```typescript
 resource_loader_api_load_webexp_resources({
   resourceLoaderContent: {
-    payload: {...}
+    "needs_clarification": false,
+    "questions": [],
+    "resources": [...]
   },
   dryrun: false,
 });
 ```
 
-**Load Feature Experimentation campaign details:**
+**Create and load Feature Experimentation resources:**
+
+Step 1: Use the `fear_resource_extractor` prompt to convert your campaign brief:
+
+```text
+User: Create a feature flag 'new-checkout' for 25% of users
+
+Prompt Output:
+{
+  "version": 1,
+  "needs_clarification": false,
+  "questions": [],
+  "resources": [
+    {
+      "type": "project",
+      "$_ref": "p1",
+      "action": "create",
+      "payload": {...}
+    },
+    {
+      "type": "campaign",
+      "$_ref": "c1",
+      "action": "create",
+      "payload": {...}
+    }
+  ]
+}
+```
+
+Step 2: Load the resources using the tool:
 
 ```typescript
 resource_loader_api_load_featexp_resources({
   resourceLoaderContent: {
-    payload: {...}
+    "version": 1,
+    "needs_clarification": false,
+    "questions": [],
+    "resources": [...]
   },
   dryrun: false,
 });
@@ -263,7 +322,7 @@ resource_loader_api_load_featexp_resources({
 │   │   └── resource-loader-api.ts
 │   ├── prompts/              # Interactive prompt definitions
 │   │   ├── quickstart-guide.ts
-│   │   └── campaign-intaker.ts
+│   │   └── resource-loader-prompts.ts
 │   └── resources/            # Resource providers
 │       └── documentation.ts
 ├── helpers/                  # Utility functions
@@ -380,9 +439,11 @@ Activates a campaign for a visitor.
 
 Loads Web Experimentation & Personalization resources via the Resource Loader API.
 
+**Workflow:** Use the `we_resource_extractor` prompt to generate the resourceLoaderContent from a natural language campaign brief, then pass it to this tool.
+
 **Parameters:**
 
-- `resourceLoaderContent` (object): JSON containing resource loader content
+- `resourceLoaderContent` (object): JSON containing resource loader content with `needs_clarification`, `questions`, and `resources` array
 - `dryrun` (boolean): Whether to simulate the request without sending it
 
 **Returns:** Loaded resources results
@@ -391,9 +452,11 @@ Loads Web Experimentation & Personalization resources via the Resource Loader AP
 
 Loads Feature Experimentation & Rollout resources via the Resource Loader API.
 
+**Workflow:** Use the `fear_resource_extractor` prompt to generate the resourceLoaderContent from a natural language campaign brief, then pass it to this tool.
+
 **Parameters:**
 
-- `resourceLoaderContent` (object): JSON containing resource loader content
+- `resourceLoaderContent` (object): JSON containing resource loader content with `version`, `needs_clarification`, `questions`, and `resources` array
 - `dryrun` (boolean): Whether to simulate the request without sending it
 
 **Returns:** Loaded resources results

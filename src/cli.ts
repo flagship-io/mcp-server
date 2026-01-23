@@ -8,7 +8,7 @@ import { registerDecisionAPIServer } from "./tools/decision-api.js";
 import { registerQuickGuidesPrompts } from "./prompts/quickstart-guide.js";
 import { registerDocResources as registerFlagshipDocResources } from "./resources/documentation.js";
 import { registerResourceLoaderAPIServer } from "./tools/resource-loader-api.js";
-import { registerResourceLoaderPrompts } from "./prompts/campaign-intaker.js";
+import { registerResourceLoaderPrompts } from "./prompts/resource-loader-prompts.js";
 import { FlagshipConfig } from "../types/abtasty-fear.js";
 import { ResourceLoaderConfig } from "../types/resource-loader.js";
 
