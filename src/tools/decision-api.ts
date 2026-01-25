@@ -1,10 +1,10 @@
 import {
   McpServer,
-  ResourceTemplate,
+  ResourceTemplate
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { FlagshipConfig } from "../../types/flagship.js";
-import { FlagshipClient } from "../../helpers/flagship.js";
+import { FlagshipConfig } from "../../types/abtasty-fear.js";
+import { FlagshipClient } from "../../helpers/abtasty-fear.js";
 
 export async function registerDecisionAPIServer(
   server: McpServer,
@@ -28,8 +28,8 @@ export async function registerDecisionAPIServer(
           .describe("The visitor context (key-value pairs for targeting)"),
         trigger_hit: z
           .boolean()
-          .describe("Whether to send a hit to analytics (default: false)"),
-      },
+          .describe("Whether to send a hit to analytics (default: false)")
+      }
     },
     async ({ visitor_id, context, trigger_hit }) => {
       if (!visitor_id) {
@@ -44,7 +44,7 @@ export async function registerDecisionAPIServer(
         const response = await flagshipClient.getCampaigns({
           visitor_id,
           context,
-          trigger_hit: trigger_hit || false,
+          trigger_hit: trigger_hit || false
         });
 
         console.error(
@@ -61,9 +61,9 @@ export async function registerDecisionAPIServer(
                 response,
                 null,
                 2
-              )}`,
-            },
-          ],
+              )}`
+            }
+          ]
         };
       } catch (error) {
         console.error(`[Tool] Error getting campaigns:`, error);
@@ -88,8 +88,8 @@ export async function registerDecisionAPIServer(
           .describe("The visitor context (key-value pairs for targeting)"),
         trigger_hit: z
           .boolean()
-          .describe("Whether to send a hit to analytics (default: false)"),
-      },
+          .describe("Whether to send a hit to analytics (default: false)")
+      }
     },
     async ({ visitor_id, context, trigger_hit }) => {
       if (!visitor_id) {
@@ -104,7 +104,7 @@ export async function registerDecisionAPIServer(
         const flags = await flagshipClient.getFlags({
           visitor_id,
           context,
-          trigger_hit: trigger_hit || false,
+          trigger_hit: trigger_hit || false
         });
 
         console.error(
@@ -119,9 +119,9 @@ export async function registerDecisionAPIServer(
                 flags,
                 null,
                 2
-              )}`,
-            },
-          ],
+              )}`
+            }
+          ]
         };
       } catch (error) {
         console.error(`[Tool] Error getting flags:`, error);
@@ -148,8 +148,8 @@ export async function registerDecisionAPIServer(
           .describe("The visitor context (key-value pairs for targeting)"),
         trigger_hit: z
           .boolean()
-          .describe("Whether to send a hit to analytics (default: false)"),
-      },
+          .describe("Whether to send a hit to analytics (default: false)")
+      }
     },
     async ({ visitor_id, campaign_id, context, trigger_hit }) => {
       if (!visitor_id) {
@@ -170,7 +170,7 @@ export async function registerDecisionAPIServer(
           visitor_id,
           campaign_id,
           context,
-          trigger_hit: trigger_hit || false,
+          trigger_hit: trigger_hit || false
         });
 
         console.error(`[Tool] Successfully retrieved campaign`);
@@ -183,9 +183,9 @@ export async function registerDecisionAPIServer(
                 response,
                 null,
                 2
-              )}`,
-            },
-          ],
+              )}`
+            }
+          ]
         };
       } catch (error) {
         console.error(`[Tool] Error getting campaign:`, error);
@@ -210,8 +210,8 @@ export async function registerDecisionAPIServer(
           .describe("The unique identifier for the variation group"),
         variation_id: z
           .string()
-          .describe("The unique identifier for the variation"),
-      },
+          .describe("The unique identifier for the variation")
+      }
     },
     async ({ visitor_id, variation_group_id, variation_id }) => {
       if (!visitor_id) {
@@ -241,9 +241,9 @@ export async function registerDecisionAPIServer(
           content: [
             {
               type: "text",
-              text: `Successfully activated campaign for visitor: ${visitor_id}\nVariation Group: ${variation_group_id}\nVariation: ${variation_id}`,
-            },
-          ],
+              text: `Successfully activated campaign for visitor: ${visitor_id}\nVariation Group: ${variation_group_id}\nVariation: ${variation_id}`
+            }
+          ]
         };
       } catch (error) {
         console.error(`[Tool] Error activating campaign:`, error);
@@ -255,11 +255,11 @@ export async function registerDecisionAPIServer(
   // Add a dynamic environment info resource
   server.registerResource(
     "decision_api_environment_info",
-    new ResourceTemplate("flagship://environment/info", { list: undefined }),
+    new ResourceTemplate("fear://environment/info", { list: undefined }),
     {
       title: "Environment Info Resource", // Display name for UI
       description:
-        "Provides information about the Flagship environment configuration.",
+        "Provides information about the FE&R environment configuration."
     },
     async (uri) => {
       try {
@@ -273,8 +273,8 @@ export async function registerDecisionAPIServer(
             environment?.campaigns?.map((c: any) => ({
               id: c.id,
               name: c.name,
-              type: c.type,
-            })) || [],
+              type: c.type
+            })) || []
         };
 
         return {
@@ -282,9 +282,9 @@ export async function registerDecisionAPIServer(
             {
               uri: uri.href,
               mimeType: "application/json",
-              text: JSON.stringify(info, null, 2),
-            },
-          ],
+              text: JSON.stringify(info, null, 2)
+            }
+          ]
         };
       } catch (error: any) {
         throw new Error(`Failed to load environment info: ${error.message}`);

@@ -25,7 +25,7 @@ function extractMetadata(content: string, filename: string): PromptMetadata {
 
   return {
     name: filename.replace(".md", "").replace(/-/g, "_"),
-    description,
+    description
   };
 }
 
@@ -43,7 +43,7 @@ function generateQuickGuidesPrompts(): string {
 
     return {
       metadata,
-      content,
+      content
     };
   });
 
@@ -90,22 +90,39 @@ export interface GeneratedPrompt {
   return code;
 }
 
-function generateWEResourceLoaderPrompts(): string {
-  const promptsDir = join(
+function generateResourceLoaderPrompts(): string {
+  const wePromptsDir = join(
     __dirname,
     "../assistant-prompts/resource-loader/web-experimentation"
   );
-  const files = readdirSync(promptsDir).filter((file) => file.endsWith(".md"));
+  const fePromptsDir = join(
+    __dirname,
+    "../assistant-prompts/resource-loader/feature-experimentation"
+  );
 
-  const prompts = files.map((file) => {
-    const filePath = join(promptsDir, file);
+  // Collect prompts from both directories
+  const allPrompts: Array<{ metadata: PromptMetadata; content: string }> = [];
+
+  // Web Experimentation prompts
+  const weFiles = readdirSync(wePromptsDir).filter((file) =>
+    file.endsWith(".md")
+  );
+  weFiles.forEach((file) => {
+    const filePath = join(wePromptsDir, file);
     const content = readFileSync(filePath, "utf-8");
     const metadata = extractMetadata(content, file);
+    allPrompts.push({ metadata, content });
+  });
 
-    return {
-      metadata,
-      content,
-    };
+  // Feature Experimentation prompts
+  const feFiles = readdirSync(fePromptsDir).filter((file) =>
+    file.endsWith(".md")
+  );
+  feFiles.forEach((file) => {
+    const filePath = join(fePromptsDir, file);
+    const content = readFileSync(filePath, "utf-8");
+    const metadata = extractMetadata(content, file);
+    allPrompts.push({ metadata, content });
   });
 
   // Generate TypeScript code
@@ -128,7 +145,7 @@ export interface GeneratedPrompt {
 `;
 
   // Generate individual prompt constants
-  prompts.forEach((prompt) => {
+  allPrompts.forEach((prompt) => {
     const constName = prompt.metadata.name.toUpperCase();
     code += `export const ${constName}_PROMPT: GeneratedPrompt = {
   name: "${prompt.metadata.name}",
@@ -142,7 +159,7 @@ export interface GeneratedPrompt {
 
   // Generate the prompts array
   code += `\nexport const GENERATED_PROMPTS: GeneratedPrompt[] = [\n`;
-  prompts.forEach((prompt) => {
+  allPrompts.forEach((prompt) => {
     const constName = prompt.metadata.name.toUpperCase();
     code += `  ${constName}_PROMPT,\n`;
   });
@@ -166,8 +183,8 @@ try {
 
   writeFileSync(quickGuidesOutputPath, quickGuides, "utf-8");
 
-  // Resource Loader Prompts for Web Experimentation
-  const resourceLoader = generateWEResourceLoaderPrompts();
+  // Resource Loader Prompts (WE + FE combined)
+  const resourceLoader = generateResourceLoaderPrompts();
   const resourceLoaderOutputPath = join(
     __dirname,
     "../src/prompts/generated/resourceLoader.generated.ts"
@@ -181,7 +198,7 @@ try {
     `✓ Generated quick guides prompts written to: ${quickGuidesOutputPath}`
   );
   console.log(
-    `✓ Generated resource loader prompts written to: ${resourceLoaderOutputPath}`
+    `✓ Generated resource loader prompts (WE + FE) written to: ${resourceLoaderOutputPath}`
   );
   console.log("✓ Generation complete!");
 } catch (error) {

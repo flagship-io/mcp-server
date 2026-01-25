@@ -7,24 +7,28 @@ A Model Context Protocol (MCP) server that integrates AB Tasty's Feature Experim
 ### Tools
 
 - **Decision API Integration**: Retrieve campaigns and feature flags for visitors
-
   - `decision_api_get_campaigns`: Get all campaigns for a visitor with context
   - `decision_api_get_campaign`: Get a specific campaign by ID for a visitor
   - `decision_api_get_flags`: Get all feature flags for a visitor
   - `decision_api_activate_campaign`: Activate a campaign for a visitor
 
-- **Resource Loader API**: Extract and analyze campaign configurations
-  - `resource_loader_api-load`: Load campaign details and variations
+- **Resource Loader API**: Extract and analyze campaign configurations (v0.2.0+)
+  - `resource_loader_api_load_webexp_resources`: Load Web Experimentation & Personalization resources (use with `we_resource_extractor` prompt)
+  - `resource_loader_api_load_featexp_resources`: Load Feature Experimentation & Rollout resources (use with `fear_resource_extractor` prompt)
+  - _Note: In v0.2.0, the Resource Loader API was split into platform-specific tools for better clarity_
 
 ### Prompts
 
 - **Quick Start Guides**: Interactive prompts for AB Tasty SDK installation
   - Node.js SDK installation guide
-- **Campaign Intaker**: Guided campaign configuration extraction and analysis
+- **Resource Extractors**: AI-powered resource configuration generators
+  - `we_resource_extractor`: Converts natural language campaign briefs into Web Experimentation resource configurations
+  - `fear_resource_extractor`: Converts natural language campaign briefs into Feature Experimentation resource configurations
+  - These prompts generate the JSON needed for the Resource Loader API tools
 
 ### Resources
 
-- **Documentation**: Access to AB Tasty Flagship documentation directly through MCP
+- **Documentation**: Access to AB Tasty Feature Experimentation & Rollout documentation directly through MCP
 
 ## Prerequisites
 
@@ -70,13 +74,19 @@ The easiest way to use the MCP server is through npx without any installation:
       "args": [
         "-y",
         "@abtasty/mcp-server",
-        "--flagship-env-id",
+        "--fear-env-id",
         "YOUR_FEAR_ENV_ID",
-        "--flagship-api-key",
+        "--fear-api-key",
         "YOUR_FEAR_API_KEY",
-        "--resource-loader-account-id",
+        "--resource-loader-fear-account-id",
+        "YOUR_FEAR_ACCOUNT_ID",
+        "--resource-loader-fear-account-environment-id",
+        "YOUR_FEAR_ACCOUNT_ENVIRONMENT_ID",
+        "--resource-loader-fear-rca-token",
+        "YOUR_FEAR_RCA_TOKEN",
+        "--resource-loader-we-account-id",
         "YOUR_WE_ACCOUNT_ID",
-        "--resource-loader-token",
+        "--resource-loader-we-token",
         "YOUR_WE_TOKEN"
       ]
     }
@@ -86,20 +96,31 @@ The easiest way to use the MCP server is through npx without any installation:
 
 Replace the placeholder values with your actual credentials:
 
-- `YOUR_FLAGSHIP_ENV_ID`: Your AB Tasty Feature Experimentation environment ID
-- `YOUR_FLAGSHIP_API_KEY`: Your AB Tasty API key
-- `YOUR_ACCOUNT_ID`: Your Web Experimentation account ID
-- `YOUR_TOKEN`: Your Web Experimentation token
+- `YOUR_FEAR_ENV_ID`: Your AB Tasty Feature Experimentation account environment ID
+- `YOUR_FEAR_API_KEY`: Your AB Tasty Feature Experimentation API key
+- `YOUR_FEAR_ACCOUNT_ID`: Your AB Tasty Feature Experimentation Account ID
+- `YOUR_FEAR_ACCOUNT_ENVIRONMENT_ID`: Your AB Tasty Feature Experimentation account Environment ID
+- `YOUR_FEAR_RCA_TOKEN`: Your AB Tasty Feature Experimentation RCA Token
+- `YOUR_WE_ACCOUNT_ID`: Your AB Tasty Web Experimentation Account ID
+- `YOUR_WE_TOKEN`: Your AB Tasty Web Experimentation token
 
 **Alternative: Environment Variables**
 
 You can also set credentials via environment variables instead of command-line arguments:
 
 ```bash
-export FLAGSHIP_ENV_ID="your_env_id"
-export FLAGSHIP_API_KEY="your_api_key"
-export RESOURCE_LOADER_ACCOUNT_ID="your_account_id"
-export RESOURCE_LOADER_TOKEN="your_token"
+# Feature Experimentation & Rollout
+export FEAR_ENV_ID="your_fear_env_id"
+export FEAR_API_KEY="your_fear_api_key"
+
+# Resource Loader - Feature Experimentation & Rollout
+export RESOURCE_LOADER_FEAR_ACCOUNT_ID="your_fear_account_id"
+export RESOURCE_LOADER_FEAR_ACCOUNT_ENVIRONMENT_ID="your_fear_account_environment_id"
+export RESOURCE_LOADER_FEAR_RCA_TOKEN="your_fear_rca_token"
+
+# Resource Loader - Web Experimentation & Personalization
+export RESOURCE_LOADER_WE_ACCOUNT_ID="your_we_account_id"
+export RESOURCE_LOADER_WE_TOKEN="your_we_token"
 ```
 
 Then use a simpler npx command:
@@ -135,15 +156,23 @@ The server will be available at `http://localhost:3000/mcp` (or your custom port
 
 The server accepts configuration through HTTP headers for each session:
 
-#### Flagship (Feature Experimentation) Headers:
+#### Feature Experimentation & Rollout (FEAR) Headers:
 
-- `x-flagship-env-id`: Your AB Tasty environment ID
-- `x-flagship-api-key`: Your AB Tasty API key
+- `x-fear-env-id`: Your AB Tasty Feature Experimentation & Rollout environment ID
+- `x-fear-api-key`: Your AB Tasty Feature Experimentation & Rollout API key
 
 #### Resource Loader Headers (optional):
 
-- `x-resource-loader-account-id`: Your AB Tasty account ID
-- `x-resource-loader-token`: Your resource loader authentication token
+**For Web Experimentation & Personalization:**
+
+- `x-resource-loader-we-account-id`: Your AB Tasty Web Experimentation account ID
+- `x-resource-loader-we-token`: Your Web Experimentation resource loader authentication token
+
+**For Feature Experimentation & Rollout:**
+
+- `x-resource-loader-fear-account-id`: Your AB Tasty Feature Experimentation & Rollout account ID
+- `x-resource-loader-fear-account-environment-id`: Your AB Tasty Feature Experimentation & Rollout environment ID
+- `x-resource-loader-fear-rca-token`: Your Feature Experimentation & Rollout (Remote Control API) resource loader authentication token
 
 ### Connecting with MCP Clients
 
@@ -163,8 +192,8 @@ For HTTP-based clients, the server uses the Streamable HTTP transport protocol. 
     "ABTasty": {
       "url": "http://localhost:3000/mcp",
       "headers": {
-        "x-flagship-env-id": "your_env_id",
-        "x-flagship-api-key": "your_api_key"
+        "x-fear-env-id": "your_env_id",
+        "x-fear-api-key": "your_api_key"
       }
     }
   }
@@ -182,9 +211,9 @@ decision_api_get_campaigns({
   visitor_id: "user123",
   context: {
     age: 25,
-    country: "US",
+    country: "US"
   },
-  trigger_hit: true,
+  trigger_hit: true
 });
 ```
 
@@ -195,18 +224,86 @@ decision_api_get_flags({
   visitor_id: "user123",
   context: {
     age: 25,
-    country: "US",
+    country: "US"
   },
-  trigger_hit: false,
+  trigger_hit: false
 });
 ```
 
-**Load campaign details:**
+**Create and load Web Experimentation resources:**
+
+Step 1: Use the `we_resource_extractor` prompt to convert your campaign brief into a resource configuration:
+
+```text
+User: Create an A/B test on https://example.com/pricing.
+Show a red button for 50% of traffic.
+
+Prompt Output:
+{
+  "needs_clarification": false,
+  "questions": [],
+  "resources": [
+    {
+      "type": "campaign",
+      "$_ref": "c1",
+      "action": "create",
+      "payload": {...}
+    }
+  ]
+}
+```
+
+Step 2: Load the resources using the tool:
 
 ```typescript
-resource_loader_api-load({
+resource_loader_api_load_webexp_resources({
   resourceLoaderContent: {
-    payload: {...}
+    "needs_clarification": false,
+    "questions": [],
+    "resources": [...]
+  },
+  dryrun: false,
+});
+```
+
+**Create and load Feature Experimentation resources:**
+
+Step 1: Use the `fear_resource_extractor` prompt to convert your campaign brief:
+
+```text
+User: Create a feature flag 'new-checkout' for 25% of users
+
+Prompt Output:
+{
+  "version": 1,
+  "needs_clarification": false,
+  "questions": [],
+  "resources": [
+    {
+      "type": "project",
+      "$_ref": "p1",
+      "action": "create",
+      "payload": {...}
+    },
+    {
+      "type": "campaign",
+      "$_ref": "c1",
+      "action": "create",
+      "payload": {...}
+    }
+  ]
+}
+```
+
+Step 2: Load the resources using the tool:
+
+```typescript
+resource_loader_api_load_featexp_resources({
+  resourceLoaderContent: {
+    "version": 1,
+    "needs_clarification": false,
+    "questions": [],
+    "resources": [...]
   },
   dryrun: false,
 });
@@ -225,12 +322,12 @@ resource_loader_api-load({
 │   │   └── resource-loader-api.ts
 │   ├── prompts/              # Interactive prompt definitions
 │   │   ├── quickstart-guide.ts
-│   │   └── campaign-intaker.ts
+│   │   └── resource-loader-prompts.ts
 │   └── resources/            # Resource providers
 │       └── documentation.ts
 ├── helpers/                  # Utility functions
-│   ├── flagship.ts          # AB Tasty SDK wrapper
-│   └── resourceLoader.ts    # Campaign extraction utilities
+│   ├── abtasty-fear.ts      # AB Tasty Feature Experimentation SDK wrapper
+│   └── resource-loader.ts   # Campaign extraction utilities
 ├── types/                   # TypeScript type definitions
 ├── assistant-prompts/       # Markdown prompt templates
 └── build/                   # Compiled output
@@ -338,13 +435,28 @@ Activates a campaign for a visitor.
 
 **Returns:** Activation confirmation
 
-#### `resource_loader_api-load`
+#### `resource_loader_api_load_webexp_resources`
 
-Loads resources via the Resource Loader API.
+Loads Web Experimentation & Personalization resources via the Resource Loader API.
+
+**Workflow:** Use the `we_resource_extractor` prompt to generate the resourceLoaderContent from a natural language campaign brief, then pass it to this tool.
 
 **Parameters:**
 
-- `resourceLoaderContent` (object): JSON containing resource loader content
+- `resourceLoaderContent` (object): JSON containing resource loader content with `needs_clarification`, `questions`, and `resources` array
+- `dryrun` (boolean): Whether to simulate the request without sending it
+
+**Returns:** Loaded resources results
+
+#### `resource_loader_api_load_featexp_resources`
+
+Loads Feature Experimentation & Rollout resources via the Resource Loader API.
+
+**Workflow:** Use the `fear_resource_extractor` prompt to generate the resourceLoaderContent from a natural language campaign brief, then pass it to this tool.
+
+**Parameters:**
+
+- `resourceLoaderContent` (object): JSON containing resource loader content with `version`, `needs_clarification`, `questions`, and `resources` array
 - `dryrun` (boolean): Whether to simulate the request without sending it
 
 **Returns:** Loaded resources results

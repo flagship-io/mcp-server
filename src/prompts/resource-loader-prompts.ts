@@ -1,7 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { GENERATED_PROMPTS } from "../prompts/generated/resourceLoader.generated.js";
-import { FlagshipConfig } from "../../types/flagship.js";
 
 /**
  * Registers all generated prompts as MCP prompts
@@ -24,7 +23,7 @@ export async function registerResourceLoaderPrompts(
           title: prompt.title,
           description: prompt.description,
           argsSchema:
-            Object.keys(argsSchema).length > 0 ? argsSchema : undefined,
+            Object.keys(argsSchema).length > 0 ? argsSchema : undefined
         },
         async () => {
           // Replace any argument placeholders in the content
@@ -36,17 +35,17 @@ export async function registerResourceLoaderPrompts(
                 role: "assistant",
                 content: {
                   type: "text",
-                  text: "Call the MCP tool `resource_loader_api.load` to load resources via the Resource Loader API.",
-                },
+                  text: "After generating the resource JSON, call the appropriate MCP tool to load the resources: Use `resource_loader_api_load_webexp_resources` for Web Experimentation campaigns or `resource_loader_api_load_featexp_resources` for Feature Experimentation campaigns."
+                }
               },
               {
                 role: "user",
                 content: {
                   type: "text",
-                  text: content,
-                },
-              },
-            ],
+                  text: content
+                }
+              }
+            ]
           };
         }
       );

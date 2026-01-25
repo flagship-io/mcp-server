@@ -1,14 +1,15 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import type { FlagshipConfig } from "../types/flagship.js";
+import type { FlagshipConfig } from "../types/abtasty-fear.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import express from "express";
 import { randomUUID } from "crypto";
 import { registerDecisionAPIServer } from "./tools/decision-api.js";
 import { registerQuickGuidesPrompts } from "./prompts/quickstart-guide.js";
 import { registerDocResources as registerFlagshipDocResources } from "./resources/documentation.js";
-import { ResourceLoaderConfig } from "../types/resourceLoader.js";
+import { ResourceLoaderConfig } from "../types/resource-loader.js";
 import { registerResourceLoaderAPIServer } from "./tools/resource-loader-api.js";
-import { registerResourceLoaderPrompts } from "./prompts/campaign-intaker.js";
+import { registerResourceLoaderPrompts } from "./prompts/resource-loader-prompts.js";
+import { VERSION } from "../version.js";
 
 // Set up Express and HTTP transport
 const app = express();
@@ -32,17 +33,22 @@ app.post("/mcp", async (req, res) => {
     } else if (!sessionId) {
       // New session - create server with credentials from headers
       const flagshipConfig: FlagshipConfig = {
-        env_id: (req.headers["x-flagship-env-id"] as string) || "",
-        api_key: (req.headers["x-flagship-api-key"] as string) || "",
+        env_id: (req.headers["x-fear-env-id"] as string) || "",
+        api_key: (req.headers["x-fear-api-key"] as string) || ""
       };
 
       const resourceLoaderConfig: ResourceLoaderConfig = {
-        account_id:
-          (req.headers["x-resource-loader-account-id"] as string) || "",
-        account_environment_id:
-          (req.headers["x-resource-loader-account-environment-id"] as string) ||
-          "",
-        token: (req.headers["x-resource-loader-token"] as string) || "",
+        we_account_id:
+          (req.headers["x-resource-loader-we-account-id"] as string) || "",
+        fear_rca_account_id:
+          (req.headers["x-resource-loader-fear-account-id"] as string) || "",
+        fear_rca_account_environment_id:
+          (req.headers[
+            "x-resource-loader-fear-account-environment-id"
+          ] as string) || "",
+        we_token: (req.headers["x-resource-loader-we-token"] as string) || "",
+        fear_rca_token:
+          (req.headers["x-resource-loader-fear-rca-token"] as string) || ""
       };
 
       // Log configuration (masking API key for security)
@@ -63,7 +69,7 @@ app.post("/mcp", async (req, res) => {
       if (!flagshipConfig.env_id || !flagshipConfig.api_key) {
         console.error("WARNING: Flagship credentials not properly configured!");
         console.error(
-          "Please provide x-flagship-env-id and x-flagship-api-key headers."
+          "Please provide x-fear-env-id and x-fear-api-key headers."
         );
       }
 
@@ -75,18 +81,18 @@ app.post("/mcp", async (req, res) => {
           sessions[newSessionId] = sessionData;
           console.error(`Session initialized: ${newSessionId}`);
         },
-        enableJsonResponse: true,
+        enableJsonResponse: true
       });
 
       const server = new McpServer({
         name: "ABTasty",
-        version: "0.1.0",
-        description: "MCP Server integrating AB Tasty features",
+        version: VERSION,
+        description: "MCP Server integrating AB Tasty features"
       });
 
       await registerDecisionAPIServer(server, flagshipConfig);
       await registerQuickGuidesPrompts(server, flagshipConfig);
-      await registerFlagshipDocResources(server, flagshipConfig);
+      await registerFlagshipDocResources(server);
 
       await registerResourceLoaderAPIServer(server, resourceLoaderConfig);
       await registerResourceLoaderPrompts(server);
@@ -109,9 +115,9 @@ app.post("/mcp", async (req, res) => {
         jsonrpc: "2.0",
         error: {
           code: -32000,
-          message: "Invalid session ID",
+          message: "Invalid session ID"
         },
-        id: null,
+        id: null
       });
       return;
     }
@@ -125,9 +131,9 @@ app.post("/mcp", async (req, res) => {
         jsonrpc: "2.0",
         error: {
           code: -32603,
-          message: "Internal server error",
+          message: "Internal server error"
         },
-        id: null,
+        id: null
       });
     }
   }

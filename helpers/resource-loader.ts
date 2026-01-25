@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
-import { ResourceLoaderConfig } from "../types/resourceLoader.js";
+import { ResourceLoaderConfig } from "../types/resource-loader.js";
+import { VERSION } from "../version.js";
 
 /**
  * Resource Loader API Client
@@ -7,30 +8,73 @@ import { ResourceLoaderConfig } from "../types/resourceLoader.js";
  */
 export class ResourceLoaderClient {
   private config: ResourceLoaderConfig;
-  private client: AxiosInstance;
+  private clients: Map<string, AxiosInstance>;
 
   constructor(config: ResourceLoaderConfig) {
     this.config = {
-      account_id: config.account_id,
-      account_environment_id: config.account_environment_id,
-      token: config.token,
+      we_account_id: config.we_account_id,
+      we_token: config.we_token,
+      fear_rca_account_id: config.fear_rca_account_id,
+      fear_rca_account_environment_id: config.fear_rca_account_environment_id,
+      fear_rca_token: config.fear_rca_token
     };
 
-    this.client = axios.create({
+    this.clients = new Map([
+      ["web-exp", this.createClient(this.config.we_token)],
+      ["feature-exp", this.createClient(this.config.fear_rca_token)]
+    ]);
+  }
+
+  /**
+   * Factory method to create an Axios client instance
+   */
+  private createClient(token?: string): AxiosInstance {
+    return axios.create({
       baseURL: "https://resource-loader-api.abtasty.com/v1",
       headers: {
-        Authorization: "Bearer " + this.config.token,
+        Authorization: "Bearer " + token,
         "x-sdk-client": "mcp-server",
-        "x-sdk-version": "0.1.0",
-        "Content-Type": "application/json",
-      },
+        "x-sdk-version": VERSION,
+        "Content-Type": "application/json"
+      }
     });
   }
 
   /**
-   * Load resources via Resource Loader API
+   * Get the appropriate client for the API type
    */
-  async loadResources(resourceLoaderContent: any): Promise<any> {
+  private getClient(apiType: string): AxiosInstance {
+    const client = this.clients.get(apiType);
+    if (!client) {
+      throw new Error(`Unknown API type: ${apiType}`);
+    }
+    return client;
+  }
+
+  /**
+   * Load Web Exp resources via Resource Loader API
+   */
+  async loadWebExpResources(resourceLoaderContent: any): Promise<any> {
+    return this.loadResources(resourceLoaderContent, "web-exp", {
+      account_id: this.config.we_account_id!
+    });
+  }
+
+  /**
+   * Load Feat Exp resources via Resource Loader API
+   */
+  async loadFeatureExpResources(resourceLoaderContent: any): Promise<any> {
+    return this.loadResources(resourceLoaderContent, "feature-exp", {
+      account_id: this.config.fear_rca_account_id!,
+      account_environment_id: this.config.fear_rca_account_environment_id!
+    });
+  }
+
+  private async loadResources(
+    resourceLoaderContent: any,
+    apiType: string,
+    params: Record<string, string>
+  ): Promise<any> {
     try {
       // Handle both string and object inputs
       let resources;
@@ -46,7 +90,7 @@ export class ResourceLoaderClient {
 
       const payload = {
         version: 1,
-        resources: [resources],
+        resources
       };
 
       console.error("[ResourceLoader] Sending request to Resource Loader API");
@@ -55,14 +99,10 @@ export class ResourceLoaderClient {
         JSON.stringify(payload, null, 2)
       );
 
-      const response = await this.client.post(
-        `/web-exp/resource-loader`,
+      const response = await this.getClient(apiType).post(
+        `/${apiType}/resource-loader`,
         payload,
-        {
-          params: {
-            account_id: this.config.account_id,
-          },
-        }
+        { params }
       );
 
       console.error("[ResourceLoader] Response status:", response.status);
