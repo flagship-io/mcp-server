@@ -9,6 +9,8 @@ import { registerDocResources as registerFlagshipDocResources } from "./resource
 import { ResourceLoaderConfig } from "../types/resource-loader.js";
 import { registerResourceLoaderAPIServer } from "./tools/resource-loader-api.js";
 import { registerResourceLoaderPrompts } from "./prompts/resource-loader-prompts.js";
+import { registerCodebaseAnalyzerServer } from "./tools/codebase-analyzer.js";
+import { registerCodebaseAnalyzerPrompts } from "./prompts/codebase-analyzer-prompts.js";
 import { VERSION } from "../version.js";
 
 // Set up Express and HTTP transport
@@ -96,6 +98,9 @@ app.post("/mcp", async (req, res) => {
 
       await registerResourceLoaderAPIServer(server, resourceLoaderConfig);
       await registerResourceLoaderPrompts(server);
+
+      await registerCodebaseAnalyzerServer(server);
+      await registerCodebaseAnalyzerPrompts(server);
 
       sessionData = { transport, server };
 

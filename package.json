@@ -43,6 +43,7 @@
   },
   "homepage": "https://github.com/flagship-io/mcp-server#readme",
   "dependencies": {
+    "@abtasty/codebase-analyzer-typescript": "^0.1.0",
     "@flagship.io/js-sdk": "^5.1.6",
     "@modelcontextprotocol/sdk": "^1.20.1",
     "axios": "^1.12.2",
