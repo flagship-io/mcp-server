@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@abtasty/codebase-analyzer-typescript@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@abtasty/codebase-analyzer-typescript/-/codebase-analyzer-typescript-0.1.0.tgz#aa15209b6b117a20ef6af5e3724a1e8d6d390d80"
+  integrity sha512-5fkKUedl5rzmQxU/GMotRzhLtmsKDWHzEfzEpRdZNQ2EbFymZNKqtgjfeb2C8Tt/L3Y/Lko0iYoDN2mcvGxP/g==
+
 "@esbuild/aix-ppc64@0.25.11":
   version "0.25.11"
   resolved "https://registry.yarnpkg.com/@esbuild/aix-ppc64/-/aix-ppc64-0.25.11.tgz#2ae33300598132cc4cf580dbbb28d30fed3c5c49"
@@ -569,7 +574,7 @@ fresh@^2.0.0:
 
 fsevents@~2.3.3:
   version "2.3.3"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:

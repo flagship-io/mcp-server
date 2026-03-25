@@ -9,6 +9,8 @@ import { registerQuickGuidesPrompts } from "./prompts/quickstart-guide.js";
 import { registerDocResources as registerFlagshipDocResources } from "./resources/documentation.js";
 import { registerResourceLoaderAPIServer } from "./tools/resource-loader-api.js";
 import { registerResourceLoaderPrompts } from "./prompts/resource-loader-prompts.js";
+import { registerCodebaseAnalyzerServer } from "./tools/codebase-analyzer.js";
+import { registerCodebaseAnalyzerPrompts } from "./prompts/codebase-analyzer-prompts.js";
 import { FlagshipConfig } from "../types/abtasty-fear.js";
 import { ResourceLoaderConfig } from "../types/resource-loader.js";
 
@@ -132,6 +134,9 @@ await registerFlagshipDocResources(server);
 
 await registerResourceLoaderAPIServer(server, resourceLoaderConfig);
 await registerResourceLoaderPrompts(server);
+
+await registerCodebaseAnalyzerServer(server);
+await registerCodebaseAnalyzerPrompts(server);
 
 // Create stdio transport and connect
 const transport = new StdioServerTransport();
