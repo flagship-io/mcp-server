@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-03-25
+
+### Added
+
+- **Codebase Analyzer**: New tool and prompts for detecting feature flag usage in codebases:
+  - `codebase_analyzer_analyze`: Scan a directory for feature flag usage across AB Tasty (Flagship SDK) and competitor SDKs (LaunchDarkly, OpenFeature, Optimizely, Split, VWO). Returns detected flags with keys, default values, types, and file locations.
+  - New `codebase-analyzer` prompt for guided feature flag detection and migration workflows
+
 ## [0.2.0] - 2026-01-14
 
 ### Changed
@@ -47,5 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API key masking in logs
 - Session-isolated credentials
 
+[0.3.0]: https://github.com/flagship-io/mcp-server/releases/tag/v0.3.0
 [0.2.0]: https://github.com/flagship-io/mcp-server/releases/tag/v0.2.0
 [0.1.0]: https://github.com/flagship-io/mcp-server/releases/tag/v0.1.0
